@@ -1,0 +1,67 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: cargowatch-pg
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    container_name: cargowatch-redis
+    restart: unless-stopped
+    ports:
+      - "${REDIS_PORT}:6379"
+    volumes:
+      - redis_data:/data 
+
+  # influxdb:
+  #   image: influxdb:2.7-alpine
+  #   container_name: coldchain-influxdb
+  #   restart: unless-stopped
+  #   ports:
+  #     - "8086:8086"
+  #   environment:
+  #     DOCKER_INFLUXDB_INIT_MODE: setup
+  #     DOCKER_INFLUXDB_INIT_USERNAME: admin
+  #     DOCKER_INFLUXDB_INIT_PASSWORD: adminpassword123
+  #     DOCKER_INFLUXDB_INIT_ORG: coldchain_org
+  #     DOCKER_INFLUXDB_INIT_BUCKET: telemetry_bucket
+  #   volumes:
+  #     - influxdb_data:/var/lib/influxdb2
+
+  mosquitto:
+    image: eclipse-mosquitto:latest
+    container_name: cargowatch-mosquitto
+    restart: unless-stopped
+    environment:
+      MQTT_USER: ${MQTT_USER}
+      MQTT_PASSWORD: ${MQTT_PASSWORD}
+    ports:
+      - "${MQTT_PORT}:1883"
+      # - "${MQTT_WS_PORT}:9001"
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+      - mosquitto_data:/mosquitto/data
+      - mosquitto_log:/mosquitto/log
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        if [ -n "$$MQTT_USER" ] && [ -n "$$MQTT_PASSWORD" ]; then
+          mosquitto_passwd -b -c /mosquitto/config/passwordfile "$$MQTT_USER" "$$MQTT_PASSWORD"
+          chmod 644 /mosquitto/config/passwordfile
+        fi
+        exec /usr/sbin/mosquitto -c /mosquitto/config/mosquitto.conf
+
+volumes:
+  postgres_data:
+  redis_data:
+  # influxdb_data:
+  mosquitto_data:
+  mosquitto_log:
