@@ -2,6 +2,7 @@ import { Injectable, Inject } from '@nestjs/common';
 import { DRIZZLE } from '../../database/database.module.js';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import * as schema from '../../database/schema.js';
+import { eq } from 'drizzle-orm';
 
 import type { CreateDriverDto } from './dtos/create-driver.dto.js';
 
@@ -23,5 +24,15 @@ export class DriverRepository {
       .returning();
 
     return newDriver;
+  }
+
+  async updateFcmToken(driverId: string, fcmToken: string) {
+    const [updatedDriver] = await this.pg
+      .update(schema.drivers)
+      .set({ fcmToken })
+      .where(eq(schema.drivers.id, driverId))
+      .returning();
+
+    return updatedDriver;
   }
 }

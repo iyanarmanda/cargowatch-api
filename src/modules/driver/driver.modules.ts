@@ -6,5 +6,6 @@ import { DriverRepository } from './driver.repository.js';
 @Module({
   controllers: [DriverController],
   providers: [DriverService, DriverRepository],
+  exports: [DriverRepository]
 })
 export class DriverModule {}
