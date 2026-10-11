@@ -27,7 +27,7 @@ export class TripService {
       throw new BadRequestException('This truck in use');
     }
 
-    await this.driverRepository.updateFcmToken(data.driverId, data.fcmToken);
+    await this.driverRepository.updateMobileToken(data.driverId, data.mobileToken);
 
     return this.tripRepository.create(data);
   }

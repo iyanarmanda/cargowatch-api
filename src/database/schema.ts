@@ -3,7 +3,7 @@ import { pgTable, uuid, varchar, timestamp, boolean, doublePrecision } from 'dri
 export const drivers = pgTable('drivers', {
   id: uuid('id').defaultRandom().primaryKey(),
   name: varchar('name', { length: 100 }).notNull(),
-  fcmToken: varchar('fcm_token', { length: 255 }),
+  mobileToken: varchar('fcm_token', { length: 255 }),
 });
 
 export const trucks = pgTable('trucks', {

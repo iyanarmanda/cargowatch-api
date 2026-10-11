@@ -26,10 +26,10 @@ export class DriverRepository {
     return newDriver;
   }
 
-  async updateFcmToken(driverId: string, fcmToken: string) {
+  async updateMobileToken(driverId: string, mobileToken: string) {
     const [updatedDriver] = await this.pg
       .update(schema.drivers)
-      .set({ fcmToken })
+      .set({ mobileToken })
       .where(eq(schema.drivers.id, driverId))
       .returning();
 
