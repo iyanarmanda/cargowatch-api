@@ -54,8 +54,12 @@ services:
     command:
       - |
         if [ -n "$$MQTT_USER" ] && [ -n "$$MQTT_PASSWORD" ]; then
-          mosquitto_passwd -b -c /mosquitto/config/passwordfile "$$MQTT_USER" "$$MQTT_PASSWORD"
-          chmod 644 /mosquitto/config/passwordfile
+          if [ ! -f /mosquitto/config/passwordfile ]; then
+            mosquitto_passwd -b -c /mosquitto/config/passwordfile "$$MQTT_USER" "$$MQTT_PASSWORD"
+          else
+            mosquitto_passwd -b /mosquitto/config/passwordfile "$$MQTT_USER" "$$MQTT_PASSWORD"
+          fi
+          chmod 600 /mosquitto/config/passwordfile
         fi
         exec /usr/sbin/mosquitto -c /mosquitto/config/mosquitto.conf
 
