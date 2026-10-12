@@ -59,6 +59,7 @@ services:
           else
             mosquitto_passwd -b /mosquitto/config/passwordfile "$$MQTT_USER" "$$MQTT_PASSWORD"
           fi
+          chown mosquitto:mosquitto /mosquitto/config/passwordfile
           chmod 600 /mosquitto/config/passwordfile
         fi
         exec /usr/sbin/mosquitto -c /mosquitto/config/mosquitto.conf

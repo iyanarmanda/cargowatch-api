@@ -55,7 +55,7 @@ $ docker compose up -d
 Setup Mosquitto Password in docker (*if needed*):
 
 ```bash
-$ docker exec -it mosquitto mosquitto_passwd -c /mosquitto/config/passwordfile iot_client
+$ docker exec -it cargowatch-mosquitto mosquitto_passwd -c /mosquitto/config/passwordfile iot_client
 ```
 
 ### Compile and run the project
