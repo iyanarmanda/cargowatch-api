@@ -1,0 +1,81 @@
+<mjml>
+  <mj-head>
+    <mj-title>CargoWatch Weekly Operations Summary</mj-title>
+    <mj-attributes>
+      <mj-all font-family="'Inter', Helvetica, Arial, sans-serif" />
+      <mj-text font-size="14px" color="#334155" line-height="1.6" />
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#F8FAFC">
+    
+    <!-- Header -->
+    <mj-section background-color="#0F172A" padding="24px 20px">
+      <mj-column>
+        <mj-text font-size="22px" font-weight="bold" color="#FFFFFF" align="center" letter-spacing="1px">
+          CargoWatch
+        </mj-text>
+        <mj-text font-size="12px" color="#94A3B8" align="center" padding-top="4px">
+          Fleet Logistics & Telemetry Service
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <!-- Main Content -->
+    <mj-section background-color="#FFFFFF" padding="32px 24px" border-radius="0 0 8px 8px">
+      <mj-column>
+        <mj-text font-size="18px" font-weight="bold" color="#0F172A">
+          Fleet Telemetry Operational Report
+        </mj-text>
+        <mj-text>
+          Hello {{ name }},
+        </mj-text>
+        <mj-text>
+          This is a routine operational status notification regarding your active fleet telemetry logging. All diagnostic sensors and route tracking components are currently performing within normal parameters.
+        </mj-text>
+
+        <!-- Status Box -->
+        <mj-text padding="12px 0">
+          <div style="background-color: #F1F5F9; padding: 16px; border-radius: 6px;">
+            <div style="font-size: 12px; color: #64748B; font-weight: 600; margin-bottom: 4px;">SECTOR LOCATION</div>
+            <div style="font-size: 14px; font-weight: bold; color: #0F172A; margin-bottom: 12px;">Surabaya & East Java Hub</div>
+            
+            <div style="font-size: 12px; color: #64748B; font-weight: 600; margin-bottom: 4px;">TELEMETRY SYSTEM STATUS</div>
+            <div style="font-size: 14px; font-weight: bold; color: #16A34A;">Fully Operational (100% Signal)</div>
+          </div>
+        </mj-text>
+
+        <mj-text font-size="15px" font-weight="bold" color="#0F172A" padding-top="16px">
+          Routine Operations Notice:
+        </mj-text>
+        
+        <mj-text padding-top="0">
+          • Mobile telemetry tracking synchronization is active for all scheduled regional routes.<br/>
+          • Automated vehicle diagnostic checks are performed every 24 hours.<br/>
+          • Fleet managers will issue trip updates directly through the dispatch board.
+        </mj-text>
+
+        <mj-divider border-width="1px" border-color="#E2E8F0" padding="20px 0" />
+
+        <mj-text font-size="12px" color="#64748B" align="center">
+          <em>Thank you for maintaining operational excellence across the Surabaya logistics network.</em>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <!-- Footer -->
+    <mj-section padding="24px 20px">
+      <mj-column>
+        <mj-text font-size="12px" color="#94A3B8" align="center" line-height="1.5">
+          <strong>CargoWatch Logistics Center</strong><br/>
+          Jl. Raya Darmo No. 45, Wonokromo<br/>
+          Surabaya, Jawa Timur 60265, Indonesia<br/><br/>
+          This is an automated operational notification. No reply is required.
+        </mj-text>
+        <mj-text font-size="11px" color="#CBD5E1" align="center" padding-top="12px">
+          &copy; {{ currentYear }} CargoWatch Fleet Telemetry. All rights reserved.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+  </mj-body>
+</mjml>

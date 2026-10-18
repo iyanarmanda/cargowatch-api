@@ -28,6 +28,19 @@ import { z } from 'zod';
           MQTT_PASSWORD: z.string(),
           MQTT_PORT: z.preprocess((val) => (val ? Number(val) : undefined), z.number().default(1883)),
           // MQTT_WS_PORT: z.preprocess((val) => (val ? Number(val) : undefined), z.number().default(9001)),
+
+          PEPPER: z.string(),
+
+          SMTP_HOST: z.string(),
+          SMTP_PORT: z.preprocess((val) => (val ? Number(val) : undefined), z.number().default(587)),
+          SMTP_SECURE: z.preprocess((val) => {
+            if (typeof val === 'string') return val.toLowerCase() === 'true';
+            return Boolean(val);
+          }, z.boolean().default(false)),
+          SMTP_USER: z.string(),
+          SMTP_PASS: z.string(),
+          MAIL_FROM: z.string(),
+          MAIL_DOMAIN: z.string(),
         });
       return schema.parse(env);
       },

@@ -1,0 +1,81 @@
+<mjml>
+  <mj-head>
+    <mj-title>Welcome to CargoWatch</mj-title>
+    <mj-attributes>
+      <mj-all font-family="'Inter', Helvetica, Arial, sans-serif" />
+      <mj-text font-size="14px" color="#334155" line-height="1.6" />
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#F8FAFC">
+    
+    <!-- Header -->
+    <mj-section background-color="#0F172A" padding="24px 20px">
+      <mj-column>
+        <mj-text font-size="22px" font-weight="bold" color="#FFFFFF" align="center" letter-spacing="1px">
+          CargoWatch
+        </mj-text>
+        <mj-text font-size="12px" color="#94A3B8" align="center" padding-top="4px">
+          Fleet Logistics & Telemetry Monitoring
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <!-- Main Content -->
+    <mj-section background-color="#FFFFFF" padding="32px 24px" border-radius="0 0 8px 8px">
+      <mj-column>
+        <mj-text font-size="18px" font-weight="bold" color="#0F172A">
+          Welcome aboard, {{ name }}!
+        </mj-text>
+        <mj-text>
+          An administrator has created your official <strong>CargoWatch</strong> account with the role of <span style="color: #2563EB; font-weight: 600;">{{ role }}</span>.
+        </mj-text>
+
+        <!-- Credentials Box Fix -->
+        <mj-text padding="12px 0">
+          <div style="background-color: #F1F5F9; padding: 16px; border-radius: 6px;">
+            <div style="font-size: 12px; color: #64748B; font-weight: 600; margin-bottom: 2px;">REGISTERED EMAIL</div>
+            <div style="font-size: 14px; font-weight: bold; color: #0F172A; margin-bottom: 12px;">{{ email }}</div>
+            
+            <div style="font-size: 12px; color: #64748B; font-weight: 600; margin-bottom: 2px;">TEMPORARY PASSWORD</div>
+            <div style="font-size: 18px; font-weight: bold; color: #2563EB; letter-spacing: 1.5px;">{{ plainPassword }}</div>
+          </div>
+        </mj-text>
+
+        <mj-text font-size="15px" font-weight="bold" color="#0F172A" padding-top="16px">
+          How to Access Your Account:
+        </mj-text>
+        
+        <mj-text padding-top="0">
+          • <strong>For Drivers:</strong> Open the <strong>CargoWatch Mobile App</strong> on your mobile device to receive trip schedules.<br/>
+          • <strong>For Admins & Operators:</strong> Log in directly to the <strong>CargoWatch Web Dashboard</strong> to manage trips, drivers, and fleet telemetry.
+        </mj-text>
+
+<!--
+        <mj-button background-color="#2563EB" color="#FFFFFF" font-weight="bold" border-radius="6px" href="https://izuli.my.id" padding-top="16px">
+          Access CargoWatch Portal
+        </mj-button>
+-->
+
+        <mj-divider border-width="1px" border-color="#E2E8F0" padding="20px 0" />
+
+        <mj-text font-size="12px" color="#64748B" align="center">
+          <em>For security compliance, please change your temporary password immediately upon your first login.</em>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <!-- Footer -->
+    <mj-section padding="24px 20px">
+      <mj-column>
+        <mj-text font-size="12px" color="#94A3B8" align="center" line-height="1.5">
+          This is an automated operational notification from the CargoWatch Logistics System.<br/>
+          If you have questions, please contact your Fleet Dispatcher or email <a href="mailto:contact@izuli.my.id" style="color: #64748B;">contact@izuli.my.id</a>.
+        </mj-text>
+        <mj-text font-size="11px" color="#CBD5E1" align="center" padding-top="12px">
+          &copy; {{ currentYear }} CargoWatch Fleet Telemetry. All rights reserved.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+  </mj-body>
+</mjml>

@@ -1,19 +1,25 @@
 import { Module } from '@nestjs/common';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import { DatabaseModule } from './database/database.module.js';
 import { EnvModule } from './core/env.module.js';
-import { DriverModule } from './modules/driver/driver.modules.js';
+import { MailModule } from './modules/mail/mail.module.js';
+import { AuthModule } from './modules/auth/auth.module.js';
+import { UserModule } from './modules/user/user.module.js';
 import { TruckModule } from './modules/truck/truck.module.js';
-import { TripModule } from './modules/trip/trip.module.js';
+// import { TripModule } from './modules/trip/trip.module.js';
 import { TelemetryModule } from './modules/telemetry/telemetry.module.js';
 
 @Module({
   imports: [
+    EventEmitterModule.forRoot(),
     DatabaseModule,
     EnvModule,
 
-    DriverModule,
+    MailModule,
+    AuthModule,
+    UserModule,
     TruckModule,
-    TripModule,
+    // TripModule,
     TelemetryModule
   ],
 })
