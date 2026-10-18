@@ -3,7 +3,7 @@ import { DRIZZLE } from '../../database/database.module.js';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import * as schema from '../../database/schema.js';
 
-import type { CreateTruckDto } from './dtos/create-truck.dto.js';
+import type { CreateTruckSchema } from './schemas/create-truck.schema.js';
 
 @Injectable()
 export class TruckRepository {
@@ -16,7 +16,7 @@ export class TruckRepository {
     return this.pg.select().from(schema.trucks);
   }
 
-  async create(data: CreateTruckDto) {
+  async create(data: CreateTruckSchema) {
     const [newTruck] = await this.pg
       .insert(schema.trucks)
       .values(data)

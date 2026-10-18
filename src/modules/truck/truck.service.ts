@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { TruckRepository } from './truck.repository.js';
 
-import type { CreateTruckDto } from "./dtos/create-truck.dto.js";
+import type { CreateTruckSchema } from "./schemas/create-truck.schema.js";
 
 @Injectable()
 export class TruckService {
@@ -13,7 +13,7 @@ export class TruckService {
     return this.truckRepository.findAll();
   }
 
-  async create(data: CreateTruckDto) {
-    return this.truckRepository.create(data);
+  async create(data: CreateTruckSchema) {
+    return await this.truckRepository.create(data);
   }
 }

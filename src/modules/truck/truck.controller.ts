@@ -1,9 +1,9 @@
 import { Controller, Get, Post, Body, UsePipes } from '@nestjs/common';
 import {ZodValidationPipe } from '../../common/pipes/zod-validation.pipe.js';
 import { TruckService } from './truck.service.js';
-import { createTruckSchema } from './dtos/create-truck.dto.js';
+import { createTruckSchema } from './schemas/create-truck.schema.js';
 
-import type { CreateTruckDto } from './dtos/create-truck.dto.js';
+import type { CreateTruckSchema } from './schemas/create-truck.schema.js';
 
 @Controller({
   path: 'trucks',
@@ -24,12 +24,13 @@ export class TruckController {
 
   @Post()
   @UsePipes(new ZodValidationPipe(createTruckSchema))
-  async create(@Body() body: CreateTruckDto) {
-    const data = await this.truckService.create(body);
+  async create(@Body() body: CreateTruckSchema) {
+    const truck = await this.truckService.create(body);
+    
     return {
       status: 201,
       message: 'Truck created successfully',
-      data,
+      data: truck,
     }
   }
 }
