@@ -23,3 +23,7 @@ export const tripStatusEnum = pgEnum('trip_status', [
   'CANCELLED',        // trip cancelled by driver or operator
 ]);
 
+export type UserRoleEnum = (typeof userRoleEnum.enumValues)[number];
+export type TruckStatusEnum = (typeof truckStatusEnum.enumValues)[number];
+export type TripStatusEnum = (typeof tripStatusEnum.enumValues)[number];
+

@@ -28,6 +28,8 @@ export const trips = pgTable('trips', {
   operatorId: uuid('operator_id').references(() => users.id).notNull(),
   truckId: uuid('truck_id').references(() => trucks.id).notNull(),
   status: tripStatusEnum('status').default('DRAFT').notNull(),
+  origin: varchar('origin', { length: 255 }),
+  destination: varchar('destination', { length: 255 }).notNull(),
   startedAt: timestamp('started_at'),
   completedAt: timestamp('completed_at'),
   createdAt: timestamp('created_at').defaultNow().notNull(),

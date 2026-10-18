@@ -6,6 +6,7 @@ import { eq, aliasedTable, desc, and, inArray } from 'drizzle-orm';
 
 import type { CreateTripSchema } from './schemas/create-trip.schema.js';
 import type { StartTripSchema } from './schemas/start-trip.schema.js';
+import type { TripStatusEnum } from '../../database/schema.enum.js';
 
 @Injectable()
 export class TripRepository {
@@ -46,6 +47,12 @@ export class TripRepository {
       .innerJoin(operator, eq(schema.trips.operatorId, operator.id))
       .innerJoin(schema.trucks, eq(schema.trips.truckId, schema.trucks.id))
       .orderBy(desc(schema.trips.createdAt));
+  }
+
+  async findById(id: string) {
+    return this.pg.query.trips.findFirst({
+      where: eq(schema.trips.id, id),
+    });
   }
 
   async findActiveByDriver(driverId: string) {
@@ -106,6 +113,19 @@ export class TripRepository {
       .returning();
 
     return newTrip;
+  }
+
+  async updateStatus(id: string, status: TripStatusEnum) {
+    const [updatedTrip] = await this.pg
+      .update(schema.trips)
+      .set({
+        status,
+        updatedAt: new Date(),
+      })
+      .where(eq(schema.trips.id, id))
+      .returning();
+
+    return updatedTrip;
   }
 
   async endTrip(tripId: string) {
