@@ -172,11 +172,13 @@ export class TripRepository {
     // });
   }
 
-  async endTrip(tripId: string) {
+  async completeTrip(tripId: string) {
     const [updateTrip] = await this.pg
       .update(schema.trips)
       .set({
         status: 'COMPLETED',
+        completedAt: new Date(),
+        updatedAt: new Date(),
       })
       .where(eq(schema.trips.id, tripId))
       .returning();

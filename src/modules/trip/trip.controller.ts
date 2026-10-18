@@ -4,15 +4,15 @@ import { Observable, fromEvent, map } from 'rxjs';
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe.js';
 import { TripService } from './trip.service.js';
 import { createTripSchema } from './schemas/create-trip.schema.js';
-import { endTripSchema } from './schemas/end-trip.schema.js';
 import { approveTripSchema } from './schemas/approve-trip.schema.js';
 import { confirmStartTripSchema } from './schemas/confirm-start-trip.schema.js';
+import { completeTripSchema } from './schemas/complete-trip.schema.js';
 import { TripCreatedEvent } from './events/trip-created.event.js';
 
 import type { CreateTripSchema } from './schemas/create-trip.schema.js';
-import type { EndTripSchema } from './schemas/end-trip.schema.js';
 import type { ApproveTripSchema } from './schemas/approve-trip.schema.js';
 import type { ConfirmStartTripSchema } from './schemas/confirm-start-trip.schema.js';
+import type { CompleteTripSchema } from './schemas/complete-trip.schema.js';
 
 @Controller({
   path: 'trips',
@@ -51,12 +51,6 @@ export class TripController {
   // async startTrip(@Body() startTripSchema: StartTripSchema) {
   //   return this.tripService.startTrip(startTripSchema);
   // }
-
-  @Post('end')
-  @UsePipes(new ZodValidationPipe(endTripSchema))
-  async endTrip(@Body() endTripSchema: EndTripSchema) {
-    return this.tripService.endTrip(endTripSchema);
-  }
 
   @Sse('sse/drafts')
   streamDraftTrips(): Observable<MessageEvent> {
@@ -99,6 +93,20 @@ export class TripController {
       statusCode: 200,
       message: 'Trip confirmed successfully',
       data: trip,
+    };
+  }
+
+  @Patch(':driverId/complete')
+  async completeTrip(
+    @Param('driverId', ParseUUIDPipe) driverId: string,
+    @Body(new ZodValidationPipe(completeTripSchema)) body: CompleteTripSchema,
+  ) {
+    const updatedTrip = await this.tripService.completeTrip(driverId, body);
+
+    return {
+      statusCode: 200,
+      message: 'Trip completed successfully',
+      data: updatedTrip,
     };
   }
 }

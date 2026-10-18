@@ -6,9 +6,9 @@ import { TruckService } from '../truck/truck.service.js';
 import { TripCreatedEvent } from './events/trip-created.event.js';
 
 import type { CreateTripSchema } from './schemas/create-trip.schema.js';
-import type { EndTripSchema } from './schemas/end-trip.schema.js';
 import type { ApproveTripSchema } from './schemas/approve-trip.schema.js';
 import type { ConfirmStartTripSchema } from './schemas/confirm-start-trip.schema.js';
+import type { CompleteTripSchema } from './schemas/complete-trip.schema.js';
 import type { TripStatusEnum } from '../../database/schema.enum.js';
 
 @Injectable()
@@ -145,12 +145,22 @@ export class TripService {
     return this.tripRepository.confirmStartTrip(tripId, data.truckId);
   }
 
-  async endTrip(data: EndTripSchema) {
-    const activeTrip = await this.tripRepository.findActiveById(data.tripId);
-    if (!activeTrip) {
-      throw new NotFoundException('Active session not found')
+  async completeTrip(driverId: string, data: CompleteTripSchema) {
+    const trip = await this.tripRepository.findById(data.tripId);
+    if (!trip) {
+      throw new NotFoundException('Trip not found')
     }
 
-    return this.tripRepository.endTrip(data.tripId);
+    if (trip.status !== 'ON_GOING') {
+      throw new BadRequestException(`Trip cannot be completed (status: ${trip.status})`);
+    }
+
+    if (trip.driverId !== driverId) {
+      throw new BadRequestException('You are not the driver for this trip');
+    }
+
+    await this.truckService.updateTruckStatus(trip.truckId, 'AVAILABLE');
+
+    return this.tripRepository.completeTrip(data.tripId);
   }
 }
