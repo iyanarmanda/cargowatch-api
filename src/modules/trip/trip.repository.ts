@@ -5,7 +5,6 @@ import * as schema from '../../database/schema.js';
 import { eq, aliasedTable, desc, and, inArray } from 'drizzle-orm';
 
 import type { CreateTripSchema } from './schemas/create-trip.schema.js';
-import type { StartTripSchema } from './schemas/start-trip.schema.js';
 import type { TripStatusEnum } from '../../database/schema.enum.js';
 
 @Injectable()
@@ -99,6 +98,15 @@ export class TripRepository {
       .where(eq(schema.trips.status, 'DRAFT'));
   }
 
+  async findPendingByDriver(driverId: string) {
+    return this.pg.query.trips.findFirst({
+      where: and(
+        eq(schema.trips.driverId, driverId),
+        eq(schema.trips.status, 'PENDING_CONFIRM'),
+      )
+    });
+  }
+
   async create(data: CreateTripSchema) {
     const [newTrip] = await this.pg
       .insert(schema.trips)
@@ -126,6 +134,42 @@ export class TripRepository {
       .returning();
 
     return updatedTrip;
+  }
+
+  async confirmStartTrip(tripId: string, truckId: string) {
+    const [updatedTrip] = await this.pg
+      .update(schema.trips)
+      .set({
+        status: 'ON_GOING',
+        startedAt: new Date(),
+        updatedAt: new Date(),
+      })
+      .where(eq(schema.trips.id, tripId))
+      .returning();
+
+    return updatedTrip;
+
+    // return this.pg.transaction(async (tx) => {
+    //   const [updatedTrip] = await tx
+    //     .update(schema.trips)
+    //     .set({
+    //       status: 'ON_GOING',
+    //       startedAt: new Date(),
+    //       updatedAt: new Date(),
+    //     })
+    //     .where(eq(schema.trips.id, tripId))
+    //     .returning();
+    //
+    //   await tx
+    //     .update(schema.trucks)
+    //     .set({
+    //       status: 'IN_USE',
+    //       updatedAt: new Date(),
+    //     })
+    //     .where(eq(schema.trucks.id, truckId));
+    //
+    //   return updatedTrip;
+    // });
   }
 
   async endTrip(tripId: string) {

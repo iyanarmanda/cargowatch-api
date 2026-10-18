@@ -4,15 +4,15 @@ import { Observable, fromEvent, map } from 'rxjs';
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe.js';
 import { TripService } from './trip.service.js';
 import { createTripSchema } from './schemas/create-trip.schema.js';
-import { startTripSchema } from './schemas/start-trip.schema.js';
 import { endTripSchema } from './schemas/end-trip.schema.js';
 import { approveTripSchema } from './schemas/approve-trip.schema.js';
+import { confirmStartTripSchema } from './schemas/confirm-start-trip.schema.js';
 import { TripCreatedEvent } from './events/trip-created.event.js';
 
 import type { CreateTripSchema } from './schemas/create-trip.schema.js';
-import type { StartTripSchema } from './schemas/start-trip.schema.js';
 import type { EndTripSchema } from './schemas/end-trip.schema.js';
 import type { ApproveTripSchema } from './schemas/approve-trip.schema.js';
+import type { ConfirmStartTripSchema } from './schemas/confirm-start-trip.schema.js';
 
 @Controller({
   path: 'trips',
@@ -69,6 +69,11 @@ export class TripController {
     );
   }
 
+  @Get('driver/:driverId/pending')
+  async getPendingTrip(@Param('driverId', ParseUUIDPipe) driverId: string) {
+    return this.tripService.getPendingTripByDriver(driverId);
+  }
+
   @Patch(':id/approval')
     async approveTrip(
     @Param('id', ParseUUIDPipe) id: string,
@@ -81,5 +86,19 @@ export class TripController {
       message: trip.message,
       data: trip.data,
     }
+  }
+
+  @Patch(':id/confirm-start')
+  async confirmStartTrip(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body(new ZodValidationPipe(confirmStartTripSchema)) body: ConfirmStartTripSchema,
+  ) {
+    const trip = await this.tripService.confirmStartTrip(id, body);
+
+    return {
+      statusCode: 200,
+      message: 'Trip confirmed successfully',
+      data: trip,
+    };
   }
 }

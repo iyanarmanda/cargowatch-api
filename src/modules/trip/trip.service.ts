@@ -6,9 +6,9 @@ import { TruckService } from '../truck/truck.service.js';
 import { TripCreatedEvent } from './events/trip-created.event.js';
 
 import type { CreateTripSchema } from './schemas/create-trip.schema.js';
-import type { StartTripSchema } from './schemas/start-trip.schema.js';
 import type { EndTripSchema } from './schemas/end-trip.schema.js';
 import type { ApproveTripSchema } from './schemas/approve-trip.schema.js';
+import type { ConfirmStartTripSchema } from './schemas/confirm-start-trip.schema.js';
 import type { TripStatusEnum } from '../../database/schema.enum.js';
 
 @Injectable()
@@ -26,6 +26,12 @@ export class TripService {
 
   async findAllActive() {
     return this.tripRepository.findAllActive();
+  }
+
+  async getPendingTripByDriver(driverId: string) {
+    const trip = await this.tripRepository.findPendingByDriver(driverId);
+
+    return trip;
   }
 
   async createTrip(data: CreateTripSchema) {
@@ -111,6 +117,32 @@ export class TripService {
       data: updatedTrip,
       message: statusMessage, 
     };
+  }
+
+  async confirmStartTrip(tripId: string, data: ConfirmStartTripSchema) {
+    const trip = await this.tripRepository.findById(tripId);
+
+    if (!trip) {
+      throw new NotFoundException('Trip not found');
+    }
+
+    if (trip.status !== 'PENDING_CONFIRM') {
+      throw new BadRequestException(`Trip cannot be confirmed (status: ${trip.status})`);
+    }
+
+    if (trip.driverId !== data.driverId) {
+      throw new BadRequestException('The driver does not match the data for this trip');
+    }
+
+    if (trip.truckId !== data.truckId) {
+      throw new BadRequestException('The truck does not match the data for this trip');
+    }
+
+    await this.userService.updateMobileToken(data.driverId, data.mobileToken);
+
+    await this.truckService.updateTruckStatus(data.truckId, 'IN_USE');
+
+    return this.tripRepository.confirmStartTrip(tripId, data.truckId);
   }
 
   async endTrip(data: EndTripSchema) {
