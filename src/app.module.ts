@@ -6,7 +6,7 @@ import { MailModule } from './modules/mail/mail.module.js';
 import { AuthModule } from './modules/auth/auth.module.js';
 import { UserModule } from './modules/user/user.module.js';
 import { TruckModule } from './modules/truck/truck.module.js';
-// import { TripModule } from './modules/trip/trip.module.js';
+import { TripModule } from './modules/trip/trip.module.js';
 import { TelemetryModule } from './modules/telemetry/telemetry.module.js';
 
 @Module({
@@ -19,7 +19,7 @@ import { TelemetryModule } from './modules/telemetry/telemetry.module.js';
     AuthModule,
     UserModule,
     TruckModule,
-    // TripModule,
+    TripModule,
     TelemetryModule
   ],
 })

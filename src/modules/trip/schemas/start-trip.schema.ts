@@ -6,5 +6,5 @@ export const startTripSchema = z.object({
   mobileToken: z.string(),
 });
 
-export type StartTripDto = z.infer<typeof startTripSchema>;
+export type StartTripSchema = z.infer<typeof startTripSchema>;
 

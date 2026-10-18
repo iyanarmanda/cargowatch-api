@@ -17,6 +17,12 @@ export class UserRepository {
     return this.pg.select().from(schema.users);
   }
 
+  async findById(id: string) {
+    return this.pg.query.users.findFirst({
+      where: eq(schema.users.id, id),
+    });
+  }
+
   async findByEmail(email: string) {
     const [user] = await this.pg
       .select()

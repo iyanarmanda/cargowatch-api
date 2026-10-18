@@ -6,5 +6,6 @@ import { TruckRepository } from './truck.repository.js';
 @Module({
   controllers: [TruckController],
   providers: [TruckService, TruckRepository],
+  exports: [TruckService],
 })
 export class TruckModule {}

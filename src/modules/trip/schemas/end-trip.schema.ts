@@ -4,5 +4,5 @@ export const endTripSchema = z.object({
   tripId: z.string().uuid('tripId UUID not valid'),
 });
 
-export type EndTripDto = z.infer<typeof endTripSchema>;
+export type EndTripSchema = z.infer<typeof endTripSchema>;
 
