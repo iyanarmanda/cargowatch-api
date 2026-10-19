@@ -8,6 +8,7 @@ import { UserModule } from './modules/user/user.module.js';
 import { TruckModule } from './modules/truck/truck.module.js';
 import { TripModule } from './modules/trip/trip.module.js';
 import { TelemetryModule } from './modules/telemetry/telemetry.module.js';
+import { NotificationModule } from './modules/notification/notification.module.js';
 
 @Module({
   imports: [
@@ -20,7 +21,8 @@ import { TelemetryModule } from './modules/telemetry/telemetry.module.js';
     UserModule,
     TruckModule,
     TripModule,
-    TelemetryModule
+    TelemetryModule,
+    NotificationModule,
   ],
 })
 export class AppModule {}

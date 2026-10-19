@@ -68,6 +68,11 @@ export class TripController {
     return this.tripService.getPendingTripByDriver(driverId);
   }
 
+  @Get('driver/:driverId/active')
+  async getActiveTripByDriver(@Param('driverId', ParseUUIDPipe) driverId: string) {
+    return this.tripService.getActiveTripByDriver(driverId);
+  }
+
   @Patch(':id/approval')
     async approveTrip(
     @Param('id', ParseUUIDPipe) id: string,

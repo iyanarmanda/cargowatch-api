@@ -8,6 +8,7 @@ import { TruckModule } from '../truck/truck.module.js';
 @Module({
   imports: [UserModule, TruckModule],
   controllers: [TripController],
-  providers: [TripService, TripRepository]
+  providers: [TripService, TripRepository],
+  exports: [TripService],
 })
 export class TripModule {}

@@ -41,6 +41,10 @@ import { z } from 'zod';
           SMTP_PASS: z.string(),
           MAIL_FROM: z.string(),
           MAIL_DOMAIN: z.string(),
+
+          FCM_PROJECT_ID: z.string(),
+          FCM_CLIENT_EMAIL: z.string(),
+          FCM_PRIVATE_KEY: z.string(),
         });
       return schema.parse(env);
       },

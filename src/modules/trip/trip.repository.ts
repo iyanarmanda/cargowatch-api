@@ -81,6 +81,29 @@ export class TripRepository {
     });
   }
 
+  async findActiveTripByDeviceId(deviceId: string) {
+    const [result] = await this.pg
+      .select({
+        tripId: schema.trips.id,
+        driverId: schema.users.id,
+        driverName: schema.users.name,
+        mobileToken: schema.users.mobileToken,
+        plateNumber: schema.trucks.plateNumber,
+      })
+      .from(schema.trips)
+      .innerJoin(schema.trucks, eq(schema.trips.truckId, schema.trucks.id))
+      .innerJoin(schema.users, eq(schema.trips.driverId, schema.users.id))
+      .where(
+        and(
+          eq(schema.trucks.deviceId, deviceId),
+          eq(schema.trips.status, 'ON_GOING'),
+        ),
+      )
+      .limit(1);
+
+    return result ?? null;
+  }
+
   async findAllActive() {
     return this.pg
       .select({
@@ -99,12 +122,86 @@ export class TripRepository {
   }
 
   async findPendingByDriver(driverId: string) {
-    return this.pg.query.trips.findFirst({
-      where: and(
-        eq(schema.trips.driverId, driverId),
-        eq(schema.trips.status, 'PENDING_CONFIRM'),
+    const [result] = await this.pg
+      .select({
+        id: schema.trips.id,
+        driverId: schema.trips.driverId,
+        operatorId: schema.trips.operatorId,
+        truckId: schema.trips.truckId,
+        status: schema.trips.status,
+        origin: schema.trips.origin,
+        destination: schema.trips.destination,
+        startedAt: schema.trips.startedAt,
+        completedAt: schema.trips.completedAt,
+        createdAt: schema.trips.createdAt,
+        updatedAt: schema.trips.updatedAt,
+        truck: {
+          id: schema.trucks.id,
+          plateNumber: schema.trucks.plateNumber,
+          deviceId: schema.trucks.deviceId,
+        },
+        driver: {
+          id: schema.users.id,
+          name: schema.users.name,
+        },
+      })
+      .from(schema.trips)
+      .innerJoin(schema.trucks, eq(schema.trips.truckId, schema.trucks.id))
+      .innerJoin(schema.users, eq(schema.trips.driverId, schema.users.id))
+      .where(
+        and(
+          eq(schema.trips.driverId, driverId),
+          eq(schema.trips.status, 'PENDING_CONFIRM'),
+        ),
       )
-    });
+      .limit(1);
+
+    return result ?? null;
+
+    // return this.pg.query.trips.findFirst({
+    //   where: and(
+    //     eq(schema.trips.driverId, driverId),
+    //     eq(schema.trips.status, 'PENDING_CONFIRM'),
+    //   )
+    // });
+  }
+
+  async findActiveTripByDriver(driverId: string) {
+    const [result] = await this.pg
+      .select({
+        id: schema.trips.id,
+        driverId: schema.trips.driverId,
+        operatorId: schema.trips.operatorId,
+        truckId: schema.trips.truckId,
+        status: schema.trips.status,
+        origin: schema.trips.origin,
+        destination: schema.trips.destination,
+        startedAt: schema.trips.startedAt,
+        completedAt: schema.trips.completedAt,
+        createdAt: schema.trips.createdAt,
+        updatedAt: schema.trips.updatedAt,
+        truck: {
+          id: schema.trucks.id,
+          plateNumber: schema.trucks.plateNumber,
+          deviceId: schema.trucks.deviceId,
+        },
+        driver: {
+          id: schema.users.id,
+          name: schema.users.name,
+        },
+      })
+      .from(schema.trips)
+      .innerJoin(schema.trucks, eq(schema.trips.truckId, schema.trucks.id))
+      .innerJoin(schema.users, eq(schema.trips.driverId, schema.users.id))
+      .where(
+        and(
+          eq(schema.trips.driverId, driverId),
+          eq(schema.trips.status, 'ON_GOING'),
+        ),
+      )
+      .limit(1);
+
+    return result ?? null;
   }
 
   async create(data: CreateTripSchema) {

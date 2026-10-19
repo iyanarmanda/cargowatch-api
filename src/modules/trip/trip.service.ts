@@ -28,11 +28,20 @@ export class TripService {
     return this.tripRepository.findAllActive();
   }
 
+  async findActiveByDeviceId(deviceId: string) {
+    return this.tripRepository.findActiveTripByDeviceId(deviceId);
+  }
+
   async getPendingTripByDriver(driverId: string) {
     const trip = await this.tripRepository.findPendingByDriver(driverId);
 
     return trip;
   }
+
+  async getActiveTripByDriver(driverId: string) {
+    return this.tripRepository.findActiveTripByDriver(driverId);
+  }
+
 
   async createTrip(data: CreateTripSchema) {
     await this.userService.validateDriverForTrip(data.driverId);
